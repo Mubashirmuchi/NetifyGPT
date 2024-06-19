@@ -7,13 +7,12 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { auth } from "../utils/firebase";
-import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice";
+import { UserAvatar } from "../utils/constant";
 
 const Login = () => {
-  const navigate = useNavigate();
-const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [isSignInForm, setIsSignInForm] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
 
@@ -44,20 +43,20 @@ const dispatch = useDispatch()
         .then((userCredential) => {
           // Signed up
           const user = userCredential.user;
-          console.log("user update",user)
-
           updateProfile(user, {
             displayName: name.current.value,
-            photoURL:
-              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQPF3q8wloOPxxQE4UnsqW3IY-5pYnAmSCgQ&s",
+            photoURL: UserAvatar,
           })
             .then(() => {
-              const { uid, email, displayName ,photoURL} = auth.currentUser;
-
-              dispatch(addUser({ uid: uid, email: email, displayName: displayName ,
-                photoURL:photoURL
-              }));
-              navigate("/browse");
+              const { uid, email, displayName, photoURL } = auth.currentUser;
+              dispatch(
+                addUser({
+                  uid: uid,
+                  email: email,
+                  displayName: displayName,
+                  photoURL: photoURL,
+                })
+              );
 
               // Profile updated!
               // ...
@@ -68,7 +67,6 @@ const dispatch = useDispatch()
               // An error occurred
               // ...
             });
-
 
           // ...
         })
@@ -89,10 +87,6 @@ const dispatch = useDispatch()
         .then((userCredential) => {
           // Signed in
           const user = userCredential.user;
-
-          console.log("uer in login",user);
-          navigate("/browse");
-
           // ...
         })
         .catch((error) => {
@@ -147,13 +141,17 @@ const dispatch = useDispatch()
           onClick={handleButtonClick}
           className="p-4 my-6 bg-red-700  w-full rounded-md"
         >
-        {isSignInForm?'Sign In':'Sign Up'}
+          {isSignInForm ? "Sign In" : "Sign Up"}
         </button>
         <p
           onClick={toggleSignInForm}
           className="py-6 cursor-pointer text-gray-600"
         >
-          New to netflix ? <span className="text-white"> {isSignInForm?'Signup Now':'Sign In'}</span>
+          New to netflix ?{" "}
+          <span className="text-white">
+            {" "}
+            {isSignInForm ? "Signup Now" : "Sign In"}
+          </span>
         </p>
       </form>
     </div>
