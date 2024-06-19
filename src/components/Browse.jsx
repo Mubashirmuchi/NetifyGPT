@@ -1,12 +1,14 @@
 import React from "react";
 import Header from "./Header";
-import usenow from '../hooks/useNowPlayingMovies'
+import usenowPlayingMovies from '../hooks/useNowPlayingMovies'
+import usePopularMovies from '../hooks/usePopularMovies'
 import MainContainer from "./MainContainer";
 import SecondaryContainer from "./SecondaryContainer";
 
 const Browse = () => {
 
-  const use = usenow()
+usenowPlayingMovies()
+usePopularMovies()
 
   return (
     <div>
